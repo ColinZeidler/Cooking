@@ -5,4 +5,6 @@
             android:icon="@drawable/content_new"
             android:title="@string/new_recipe"
             android:showAsAction="ifRoom" />
+    <item android:id="@+id/action_testItems"
+        android:title="@string/test_items_text"/>
 </menu>

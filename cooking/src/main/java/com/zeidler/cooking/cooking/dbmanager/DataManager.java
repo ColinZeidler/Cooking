@@ -18,7 +18,7 @@ import java.util.Random;
  */
 public class DataManager extends SQLiteOpenHelper{
 
-    public static final int    DATABASE_VERSION = 1;
+    public static final int    DATABASE_VERSION = 4;
     public static final String  DATABASE_NAME   = "cookbook";
 
     private static final String S_TABLENAME     = "steps";
@@ -26,7 +26,7 @@ public class DataManager extends SQLiteOpenHelper{
     private static final String S_KEY           = "id";
     private static final String S_NUMBER        = "number";
     private static final String S_INSTRUCT      = "instructions";
-    private static final String S_TIMER         = "timer length";
+    private static final String S_TIMER         = "timerLength";
 
     private static final String R_TABLENAME     = "recipes";
     //Recipes Table in this order
@@ -36,7 +36,7 @@ public class DataManager extends SQLiteOpenHelper{
     private static final String R_INGREDIENTS   = "ingredients";
     private static final String R_STEPS         = "msteps";
 
-    private static final String DELIM           = "*&*";
+    private static final String DELIM           = ",";
 
     private Random rand;
 
@@ -54,7 +54,7 @@ public class DataManager extends SQLiteOpenHelper{
         String CREATE_RECIPE_TABLE = "CREATE TABLE " + R_TABLENAME + "("
                 + R_KEY + " INTEGER PRIMARY KEY," + R_NAME + " TEXT,"
                 + R_OVERVIEW + " TEXT," + R_INGREDIENTS + " TEXT,"
-                + R_STEPS + "TEXT" + ")";
+                + R_STEPS + " TEXT" + ")";
 
         db.execSQL(CREATE_STEPS_TABLE);
         db.execSQL(CREATE_RECIPE_TABLE);
@@ -136,7 +136,6 @@ public class DataManager extends SQLiteOpenHelper{
         String selectQuery = "SELECT * FROM " + R_TABLENAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        db.close();
 
         if (cursor.moveToFirst()) {
             do {
@@ -157,7 +156,7 @@ public class DataManager extends SQLiteOpenHelper{
                 rList.add(recipe);
             }while(cursor.moveToNext());
         }
-
+        db.close();
         return rList;
     }
 
