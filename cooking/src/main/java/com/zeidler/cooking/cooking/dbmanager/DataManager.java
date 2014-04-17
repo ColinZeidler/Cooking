@@ -2,6 +2,7 @@ package com.zeidler.cooking.cooking.dbmanager;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -70,7 +71,6 @@ public class DataManager extends SQLiteOpenHelper{
 
     public void addStep(Step step) {
         step.setuID(rand.nextLong());
-        SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(S_KEY, step.getuID());
@@ -79,18 +79,18 @@ public class DataManager extends SQLiteOpenHelper{
         values.put(S_TIMER, step.getTimer());
 
         //insert row
+        SQLiteDatabase db = this.getWritableDatabase();
         db.insert(S_TABLENAME, null, values);
         db.close();
     }
 
     public void addRecipe(Recipe recipe) {
         recipe.setuID(rand.nextLong());
-        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         //Creating string containing uIDs of all Steps
         int count = 0;
-        String csSteps = new String();
+        String csSteps = "";
         for (Step s : recipe.getSteps()) {
             addStep(s);
             if (count !=0) {
@@ -102,7 +102,7 @@ public class DataManager extends SQLiteOpenHelper{
 
         //Creating string containing all ingredients
         count = 0;
-        String csIng = new String();
+        String csIng = "";
         for (String s : recipe.getIngredients()) {
             if (count !=0) {
                 csIng += DELIM;
@@ -117,6 +117,7 @@ public class DataManager extends SQLiteOpenHelper{
         values.put(R_INGREDIENTS, csIng);
         values.put(R_STEPS, csSteps);
 
+        SQLiteDatabase db = this.getWritableDatabase();
         db.insert(R_TABLENAME, null, values);
         db.close();
     }
@@ -129,12 +130,35 @@ public class DataManager extends SQLiteOpenHelper{
 
     }
 
-    public Recipe getRecipe() { //TODO determine what to use for recipe lookups
-        return new Recipe("", "", new ArrayList<Step>(), new ArrayList<String>());
-    }
-
     public List<Recipe> getRecipes() {
-        return new ArrayList<Recipe>();
+        List<Recipe> rList = new ArrayList<Recipe>();
+
+        String selectQuery = "SELECT * FROM " + R_TABLENAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        db.close();
+
+        if (cursor.moveToFirst()) {
+            do {
+                String[] temp = cursor.getString(3).split(DELIM);
+                List<String> ings = new ArrayList<String>(temp.length);
+                for (int i = 0; i < temp.length; i ++) {
+                    ings.add(temp[i]);
+                }
+
+                temp = cursor.getString(4).split(DELIM);
+                List<Step> steps = new ArrayList<Step>(temp.length);
+                for (int i = 0; i < temp.length; i++) {
+                    long l = Long.parseLong(temp[i]);
+                    steps.add(getStep(l));
+                }
+                Recipe recipe = new Recipe(cursor.getString(1), cursor.getString(2),
+                        steps, ings);
+                rList.add(recipe);
+            }while(cursor.moveToNext());
+        }
+
+        return rList;
     }
 
     public Step getStep(long uID) {
@@ -145,6 +169,18 @@ public class DataManager extends SQLiteOpenHelper{
         return new ArrayList<Step>();
     }
 
-    public void deleteStep(long uID) {}
-    public void deleteRecipe(long uID) {}
+    public void deleteStep(Step s) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(S_TABLENAME, S_KEY + " = ?", new String[] {String.valueOf(s.getuID())});
+        db.close();
+    }
+    public void deleteRecipe(Recipe r) {
+        for (Step s: r.getSteps()) {
+            deleteStep(s);
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(R_TABLENAME, R_KEY + " = ?", new String[] {String.valueOf(r.getuID())});
+        db.close();
+    }
 }
