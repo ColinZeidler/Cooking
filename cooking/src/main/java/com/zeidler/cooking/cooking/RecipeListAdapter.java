@@ -1,7 +1,6 @@
 package com.zeidler.cooking.cooking;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,4 +59,5 @@ public class RecipeListAdapter extends ArrayAdapter<Recipe> {
 
         return v;
     }
+
 }

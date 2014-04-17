@@ -79,9 +79,22 @@ public class RecipeListView extends Activity {
             case R.id.action_testItems:
                 createTestItems();
                 return true;
+            case R.id.action_delete_all:
+                deleteAllItems();
+                return true;
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteAllItems() {
+        for (Recipe r : recipes) {
+            Log.v("Recipe Names", r.getName() + " id=" + r.getuID());
+            dbManager.deleteRecipe(r);
+        }
+        arrAdapter.clear();
+        arrAdapter.addAll(dbManager.getRecipes());
+        arrAdapter.notifyDataSetChanged();
     }
 
     private void createTestItems() {
@@ -119,8 +132,8 @@ public class RecipeListView extends Activity {
             dbManager.addRecipe(r);
         }
 
-        //TODO figure out why this does not autoupdate the listview
-        recipes = dbManager.getRecipes();
+        arrAdapter.clear();
+        arrAdapter.addAll(dbManager.getRecipes());
         arrAdapter.notifyDataSetChanged();
     }
 }

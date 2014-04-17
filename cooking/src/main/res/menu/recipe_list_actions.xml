@@ -7,4 +7,6 @@
             android:showAsAction="ifRoom" />
     <item android:id="@+id/action_testItems"
         android:title="@string/test_items_text"/>
+    <item android:id="@+id/action_delete_all"
+        android:title="Delete all items"/>
 </menu>

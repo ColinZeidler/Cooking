@@ -2,7 +2,6 @@ package com.zeidler.cooking.cooking.addrecipe;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Notification;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -84,9 +83,10 @@ public class AddRecipeActivity extends Activity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_done:
-                //TODO save data to db as new Recipe
+                //TODO save data to db as new Recipe and end this activity
                 return true;
             case R.id.action_cancel:
+                //TODO end activity without saving
                 return true;
         }
         return super.onOptionsItemSelected(item);
