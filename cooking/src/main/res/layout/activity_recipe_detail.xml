@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/card_bg">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                style="@style/CardUI">
+
+                <TextView
+                    style="@style/CardText"
+                    android:text="@string/rd_title"
+                    android:id="@+id/rd_recipe_name"/>
+
+                <TextView
+                    style="@style/CardText"
+                    android:text="@string/er_intro"/>
+
+                </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                style="@style/CardUI">
+
+                <TextView
+                    style="@style/CardText"
+                    android:text="@string/er_ingredients"/>
+
+                </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                style="@style/CardUI">
+
+                <TextView
+                    style="@style/CardText"
+                    android:text="@string/er_steps"/>
+
+                </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

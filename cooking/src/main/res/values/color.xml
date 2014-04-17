@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="red">#ffe03f3b</color>
+    <color name="blue">#ff3cb1ed</color>
+    <color name="green">#ff7fe027</color>
+
+
+    <color name="card_trim">#FF831E</color>
+    <color name="card_bg">#AAA</color>
+
+    <color name="none">#0000</color>
+    <color name="button_bg_click">#ff275be0</color>
+    <color name="button_text_click">#ffffffff</color>
+    <color name="button_text">#ff5495e0</color>
+</resources>
