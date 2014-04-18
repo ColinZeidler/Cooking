@@ -88,13 +88,23 @@ public class RecipeListView extends Activity {
     }
 
     private void deleteAllItems() {
-        for (Recipe r : recipes) {
-            Log.v("Recipe Names", r.getName() + " id=" + r.getuID());
-            dbManager.deleteRecipe(r);
-        }
+
+        final List<Recipe> rl = new ArrayList<Recipe>(recipes);
         arrAdapter.clear();
-        arrAdapter.addAll(dbManager.getRecipes());
         arrAdapter.notifyDataSetChanged();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (Recipe r : rl) {
+                    dbManager.deleteRecipe(r);
+                }
+
+                Log.v("Thread2", "done deleting items");
+            }
+        }).start();
+
+        Log.v("Thread1", "new Thread is running");
     }
 
     private void createTestItems() {
