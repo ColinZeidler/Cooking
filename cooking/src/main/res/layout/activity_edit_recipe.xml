@@ -51,7 +51,7 @@
                     android:inputType="textMultiLine"
                     android:hint="@string/overview_hint"
                     android:ems="10"
-                    android:id="@+id/er_recipe_intro"
+                    android:id="@+id/er_recipe_overview"
                     android:layout_gravity="right"
                     android:layout_marginRight="5dp" />
 
@@ -59,7 +59,8 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                style="@style/CardUI">
+                style="@style/CardUI"
+                android:id="@+id/layout_ingredients">
 
                 <TextView
                     style="@style/CardText"

@@ -3,6 +3,7 @@ package com.zeidler.cooking.cooking.addrecipe;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import com.zeidler.cooking.cooking.R;
 import com.zeidler.cooking.cooking.Recipe;
 import com.zeidler.cooking.cooking.Step;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,9 +86,21 @@ public class AddRecipeActivity extends Activity{
         switch(item.getItemId()) {
             case R.id.action_done:
                 //TODO save data to db as new Recipe and end this activity
+                String name = ((EditText) findViewById(R.id.er_recipe_name)).getText().toString();
+                String overview = ((EditText)
+                        findViewById(R.id.er_recipe_overview)).getText().toString();
+
+                List<String> ingredients = new ArrayList<String>();
+                LinearLayout ingLayout = (LinearLayout) findViewById(R.id.layout_ingredients);
+                for (int i = 1; i < ingLayout.getChildCount() -1; i++) {
+                    //first and last items are not EditTexts, the rest are guaranteed to be
+                    View child = ingLayout.getChildAt(i);
+                    ingredients.add(((EditText) child).getText().toString());
+                }
+
                 return true;
             case R.id.action_cancel:
-                //TODO end activity without saving
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
