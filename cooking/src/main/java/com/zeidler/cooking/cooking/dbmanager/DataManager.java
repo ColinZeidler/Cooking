@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.zeidler.cooking.cooking.Recipe;
 import com.zeidler.cooking.cooking.Step;
@@ -18,7 +19,7 @@ import java.util.Random;
  */
 public class DataManager extends SQLiteOpenHelper{
 
-    public static final int    DATABASE_VERSION = 4;
+    public static final int    DATABASE_VERSION = 5;
     public static final String  DATABASE_NAME   = "cookbook";
 
     private static final String S_TABLENAME     = "steps";
@@ -38,11 +39,8 @@ public class DataManager extends SQLiteOpenHelper{
 
     private static final String DELIM           = ",";
 
-    private Random rand;
-
     public DataManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        rand = new Random();
     }
 
     @Override
@@ -70,7 +68,6 @@ public class DataManager extends SQLiteOpenHelper{
     }
 
     public void addStep(Step step) {
-        step.setuID(rand.nextLong());
 
         ContentValues values = new ContentValues();
         values.put(S_KEY, step.getuID());
@@ -85,7 +82,6 @@ public class DataManager extends SQLiteOpenHelper{
     }
 
     public void addRecipe(Recipe recipe) {
-        recipe.setuID(rand.nextLong());
         ContentValues values = new ContentValues();
 
         //Creating string containing uIDs of all Steps
@@ -152,7 +148,7 @@ public class DataManager extends SQLiteOpenHelper{
                     steps.add(getStep(l));
                 }
                 Recipe recipe = new Recipe(cursor.getString(1), cursor.getString(2),
-                        steps, ings);
+                        steps, ings, cursor.getLong(0));
                 rList.add(recipe);
             }while(cursor.moveToNext());
         }
@@ -161,10 +157,22 @@ public class DataManager extends SQLiteOpenHelper{
     }
 
     public Step getStep(long uID) {
-        return new Step(0, "", 0);
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(S_TABLENAME, new String[] { S_KEY, S_NUMBER, S_INSTRUCT, S_TIMER},
+                S_KEY + "=?", new String[] {String.valueOf(uID)}, null, null, null, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Step s = new Step(cursor.getInt(1), cursor.getString(2), cursor.getLong(3), uID);
+        return s;
     }
 
     public List<Step> getSteps() {  //Probably won't ever be used
+        String selectQuery = "SELECT * FROM " + S_TABLENAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
         return new ArrayList<Step>();
     }
 
