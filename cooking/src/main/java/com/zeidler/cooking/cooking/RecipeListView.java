@@ -30,7 +30,7 @@ public class RecipeListView extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
-        dbManager = new DataManager(this);
+        dbManager = DataManager.getInstance(this);
         recipes = dbManager.getRecipes();
 
         arrAdapter = new RecipeListAdapter(this, R.layout.recipe_list_item,

@@ -39,8 +39,19 @@ public class DataManager extends SQLiteOpenHelper{
 
     private static final String DELIM           = ",";
 
+    private static DataManager instance;
+    private SQLiteDatabase db;
+
     public DataManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        db = this.getWritableDatabase();
+    }
+
+    public static synchronized DataManager getInstance(Context context) {
+        if (instance == null)
+            instance = new DataManager(context);
+
+        return instance;
     }
 
     @Override
@@ -76,9 +87,7 @@ public class DataManager extends SQLiteOpenHelper{
         values.put(S_TIMER, step.getTimer());
 
         //insert row
-        SQLiteDatabase db = this.getWritableDatabase();
         db.insert(S_TABLENAME, null, values);
-        db.close();
     }
 
     public void addRecipe(Recipe recipe) {
@@ -113,9 +122,7 @@ public class DataManager extends SQLiteOpenHelper{
         values.put(R_INGREDIENTS, csIng);
         values.put(R_STEPS, csSteps);
 
-        SQLiteDatabase db = this.getWritableDatabase();
         db.insert(R_TABLENAME, null, values);
-        db.close();
     }
 
     public void updateStep(Step step) {
@@ -130,7 +137,6 @@ public class DataManager extends SQLiteOpenHelper{
         List<Recipe> rList = new ArrayList<Recipe>();
 
         String selectQuery = "SELECT * FROM " + R_TABLENAME;
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
@@ -152,12 +158,10 @@ public class DataManager extends SQLiteOpenHelper{
                 rList.add(recipe);
             }while(cursor.moveToNext());
         }
-        db.close();
         return rList;
     }
 
     public Step getStep(long uID) {
-        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(S_TABLENAME, new String[] { S_KEY, S_NUMBER, S_INSTRUCT, S_TIMER},
                 S_KEY + "=?", new String[] {String.valueOf(uID)}, null, null, null, null);
@@ -171,23 +175,18 @@ public class DataManager extends SQLiteOpenHelper{
 
     public List<Step> getSteps() {  //Probably won't ever be used
         String selectQuery = "SELECT * FROM " + S_TABLENAME;
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         return new ArrayList<Step>();
     }
 
     public void deleteStep(Step s) {
-        SQLiteDatabase db = this.getWritableDatabase();
         db.delete(S_TABLENAME, S_KEY + " = ?", new String[] {String.valueOf(s.getuID())});
-        db.close();
     }
     public void deleteRecipe(Recipe r) {
         for (Step s: r.getSteps()) {
             deleteStep(s);
         }
 
-        SQLiteDatabase db = this.getWritableDatabase();
         db.delete(R_TABLENAME, R_KEY + " = ?", new String[] {String.valueOf(r.getuID())});
-        db.close();
     }
 }
