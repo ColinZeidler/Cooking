@@ -88,6 +88,7 @@
                 <Button
                     android:text="@string/er_add_ing"
                     android:id="@+id/er_add_ing_button"
+                    android:onClick="addIngredient"
                     style="@style/CardButton"/>
 
             </LinearLayout>
@@ -106,6 +107,7 @@
                 <Button
                     android:text="@string/er_add_step"
                     android:id="@+id/er_add_step_button"
+                    android:onClick="addStep"
                     style="@style/CardButton"/>
 
                 </LinearLayout>
