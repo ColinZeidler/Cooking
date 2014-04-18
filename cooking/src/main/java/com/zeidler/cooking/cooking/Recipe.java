@@ -1,7 +1,7 @@
 package com.zeidler.cooking.cooking;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Colin on 2014-04-13.
@@ -19,6 +19,17 @@ public class Recipe implements Comparable<Recipe> {
         this.overview = o;
         this.steps = s;
         this.ingredients = i;
+
+        setuID((new Random()).nextLong());
+    }
+
+    public Recipe(String n, String o, List<Step> s, List<String> i, long id) {
+        this.name = n;
+        this.overview = o;
+        this.steps = s;
+        this.ingredients = i;
+
+        setuID(id);
     }
 
     public String getName() { return name; }

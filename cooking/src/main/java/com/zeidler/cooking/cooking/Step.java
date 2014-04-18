@@ -1,5 +1,7 @@
 package com.zeidler.cooking.cooking;
 
+import java.util.Random;
+
 /**
  * Created by Colin on 2014-04-13.
  */
@@ -14,6 +16,16 @@ public class Step implements Comparable<Step> {
         this.number = n;
         this.instructions = i;
         this.timer = t;
+
+        setuID((new Random()).nextLong());
+    }
+
+    public Step(int n, String i, long t, long id) {
+        this.number = n;
+        this.instructions = i;
+        this.timer = t;
+
+        setuID(id);
     }
 
     public int getNumber() { return number; }
