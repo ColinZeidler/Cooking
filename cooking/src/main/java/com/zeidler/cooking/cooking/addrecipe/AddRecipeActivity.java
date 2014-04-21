@@ -2,6 +2,7 @@ package com.zeidler.cooking.cooking.addrecipe;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -26,6 +27,8 @@ import java.util.List;
  */
 public class AddRecipeActivity extends Activity{
 
+    private int stepCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,8 @@ public class AddRecipeActivity extends Activity{
 
         ActionBar ab = getActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+
+        stepCount = 0;
     }
 
     public void addIngredient(View v) {
@@ -55,6 +60,13 @@ public class AddRecipeActivity extends Activity{
 
     public void editStep(View v) {
         //start edit Step intent with the Tag that is attached (Step)
+        stepCount++;
+
+        Intent intent = new Intent();
+        intent.setClass(this, AddStepActivity.class);
+        Bundle nBundle = intent.getExtras();
+        nBundle.putInt("StepNum", stepCount);
+        startActivity(intent);
 
     }
 
