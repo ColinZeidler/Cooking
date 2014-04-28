@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="C:\Users\Colin\AndroidProjects\Cooking" />
-            <option value="C:\Users\Colin\AndroidProjects\Cooking\cooking" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/cooking" />
           </set>
         </option>
       </GradleProjectSettings>

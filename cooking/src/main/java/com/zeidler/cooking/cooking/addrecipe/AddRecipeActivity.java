@@ -2,10 +2,13 @@ package com.zeidler.cooking.cooking.addrecipe;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.Layout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,10 +17,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.zeidler.cooking.cooking.R;
 import com.zeidler.cooking.cooking.Recipe;
 import com.zeidler.cooking.cooking.Step;
+import com.zeidler.cooking.cooking.dbmanager.DataManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +33,17 @@ import java.util.List;
 public class AddRecipeActivity extends Activity{
 
     private int stepCount;
+    private static final int STEP_REQUEST_CODE = 1;
+    private List<Step> steps;
+    private LinearLayout stepLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recipe);
+
+        stepLayout = (LinearLayout) findViewById(R.id.step_list_layout);
+        steps = new ArrayList<Step>();
 
         ActionBar ab = getActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
@@ -48,26 +59,66 @@ public class AddRecipeActivity extends Activity{
         et.setLayoutParams(layoutParams);
         et.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
 
-        parent.addView(et, parent.getChildCount()-1);
+        parent.addView(et, parent.getChildCount() - 1);
 
     }
 
     public void addStep(View v) {
         LinearLayout parent = (LinearLayout)v.getParent();
 
-
-    }
-
-    public void editStep(View v) {
         //start edit Step intent with the Tag that is attached (Step)
         stepCount++;
 
         Intent intent = new Intent();
         intent.setClass(this, AddStepActivity.class);
-        Bundle nBundle = intent.getExtras();
-        nBundle.putInt("StepNum", stepCount);
-        startActivity(intent);
+        intent.putExtra("StepNum", stepCount);
+        startActivityForResult(intent, STEP_REQUEST_CODE);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == STEP_REQUEST_CODE) {
+            if (resultCode == RESULT_CANCELED) {
+                stepCount--;
+            }
+            else if (resultCode == RESULT_OK) {
+                //handle adding the new step to the list
+                Step mStep = (Step) data.getSerializableExtra("NewStep");
+                steps.add(mStep);
+
+                addStep(steps.get(steps.size()-1));
+                Log.v("Step List size", steps.size() + "");
+            }
+        }
+    }
+
+    private void addStep(Step mStep) {
+        LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = vi.inflate(R.layout.step_list_item, null);
+
+        TextView num = (TextView) v.findViewById(R.id.step_num);
+        TextView iOverview = (TextView) v.findViewById(R.id.step_i_overview);
+        TextView timer = (TextView) v.findViewById(R.id.step_timer);
+
+        num.setText(mStep.getNumber() + ".");
+        String instructions;
+        if (mStep.getInstruct().length() > 20) {
+            instructions = mStep.getInstruct().substring(0, 20) + "...";
+        } else {
+            instructions = mStep.getInstruct();
+        }
+        instructions = instructions.replace("\n", " ");
+        iOverview.setText(instructions);
+
+        String time;
+        if (mStep.getTimer() == 0) {
+            //no timer set
+            time = "No Timer";
+        } else {
+            time = (mStep.getTimer() / 60) + " minutes";
+        }
+        timer.setText(time);
+        stepLayout.addView(v, stepLayout.getChildCount());
     }
 
     @Override
@@ -98,10 +149,12 @@ public class AddRecipeActivity extends Activity{
                     ingredients.add(((EditText) child).getText().toString());
                 }
 
-                //Steps for Recipe TODO get Steps for Recipe
+                Recipe recipe = new Recipe(name, overview, steps, ingredients);
 
-                //save recipe in DB TODO save to db
+                DataManager db = DataManager.getInstance(this);
+                db.addRecipe(recipe);
 
+                finish();
                 return true;
             case R.id.action_cancel:
                 finish();

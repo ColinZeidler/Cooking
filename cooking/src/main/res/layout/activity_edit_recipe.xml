@@ -102,6 +102,12 @@
                     android:layout_marginLeft="5dp"
                     android:text="@string/er_steps" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/step_list_layout"/>
+
                 <!-- TODO add a horizontal line as a separator-->
 
                 <Button

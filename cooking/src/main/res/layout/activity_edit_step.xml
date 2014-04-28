@@ -15,6 +15,88 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:orientation="vertical"
+                style="@style/CardUI">
+
+                <TextView
+                    style="@style/CardText"
+                    android:text="@string/es_instructions"
+                    android:layout_margin="5dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:hint="@string/instructions_hint"
+                    android:ems="10"
+                    android:id="@+id/es_step_instruct"
+                    android:layout_gravity="right"
+                    android:layout_margin="5dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                style="@style/CardUI">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/CardText"
+                        android:text="@string/es_timer"
+                        android:layout_margin="5dp" />
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_margin="5dp"
+                        android:text="0"
+                        android:inputType="number"
+                        android:id="@+id/es_timer_minutes"/>
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_margin="5dp"
+                        android:text="0"
+                        android:inputType="number"
+                        android:id="@+id/es_timer_seconds"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/es_timer_switch"
+                        android:layout_margin="5dp"/>
+
+                    <TextView
+                        style="@style/CardText"
+                        android:text="@string/es_minutes"
+                        android:layout_margin="10dp"/>
+
+                    <TextView
+                        style="@style/CardText"
+                        android:text="@string/es_seconds"
+                        android:layout_margin="10dp"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>

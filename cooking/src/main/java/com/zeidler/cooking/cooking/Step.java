@@ -1,11 +1,12 @@
 package com.zeidler.cooking.cooking;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by Colin on 2014-04-13.
  */
-public class Step implements Comparable<Step> {
+public class Step implements Comparable<Step> , Serializable {
     private int number;
     private String instructions;
     private long timer; //Timer of 0 means that the Step has no timer

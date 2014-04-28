@@ -60,6 +60,15 @@ public class RecipeListView extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        arrAdapter.clear();
+        arrAdapter.addAll(dbManager.getRecipes());
+        arrAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
@@ -128,14 +137,6 @@ public class RecipeListView extends Activity {
 
         recipes = new ArrayList<Recipe>();
         recipes.add(new Recipe("Cookies", "", steps, ing));
-//        recipes.add(new Recipe("Pork chops", "", steps, ing));
-//        recipes.add(new Recipe("Steak on the Grill", "", steps, ing));
-//        recipes.add(new Recipe("rice", "", steps, ing));
-//        recipes.add(new Recipe("Chicken Wings", "", steps, ing));
-//        recipes.add(new Recipe("Cereal", "", steps, ing));
-//        recipes.add(new Recipe("Brownies", "", steps, ing));
-//        recipes.add(new Recipe("Tacos", "", steps, ing));
-//        recipes.add(new Recipe("Fajitas", "", steps, ing));
         //END OF TEST INFO
 
         for (Recipe r : recipes) {
