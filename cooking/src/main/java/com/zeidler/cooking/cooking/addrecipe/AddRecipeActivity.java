@@ -95,6 +95,7 @@ public class AddRecipeActivity extends Activity{
     private void addStep(Step mStep) {
         LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.step_list_item, null);
+        //TODO add long click listener for the view, allow editing / deletion of Steps
 
         TextView num = (TextView) v.findViewById(R.id.step_num);
         TextView iOverview = (TextView) v.findViewById(R.id.step_i_overview);

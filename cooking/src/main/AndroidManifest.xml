@@ -22,10 +22,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RecipeListView"/>
         </activity>
-        <activity android:name=".addrecipe.AddStepActivity"
-            android:parentActivityName=".addrecipe.AddRecipeActivity">
-
-            </activity>
+        <activity android:name=".addrecipe.AddStepActivity"/>
+        <activity android:name=".recipedetails.RecipeDetailActivity"
+            android:parentActivityName=".RecipeListView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RecipeListView"/>
+        </activity>
     </application>
 
 </manifest>

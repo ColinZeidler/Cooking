@@ -2,6 +2,7 @@ package com.zeidler.cooking.cooking;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 
 import com.zeidler.cooking.cooking.addrecipe.AddRecipeActivity;
 import com.zeidler.cooking.cooking.dbmanager.DataManager;
+import com.zeidler.cooking.cooking.recipedetails.RecipeDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +26,19 @@ public class RecipeListView extends Activity {
     private DataManager dbManager;
     private RecipeListAdapter arrAdapter;
     private List<Recipe> recipes;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
+        mContext = this;
+
         dbManager = DataManager.getInstance(this);
         recipes = dbManager.getRecipes();
 
-        arrAdapter = new RecipeListAdapter(this, R.layout.recipe_list_item,
+        arrAdapter = new RecipeListAdapter(mContext, R.layout.recipe_list_item,
                 (ArrayList)recipes);
 
         ListView lView = (ListView) findViewById(R.id.recipeList);
@@ -42,9 +47,12 @@ public class RecipeListView extends Activity {
         lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                //TODO launch a new Activity
                 Recipe r = (Recipe)view.getTag();
+                Intent intent = new Intent();
+                intent.setClass(mContext, RecipeDetailActivity.class);
+                intent.putExtra("Recipe", r);
+                startActivity(intent);
+
             }
         });
 
@@ -82,7 +90,7 @@ public class RecipeListView extends Activity {
             case R.id.action_add:
                 Log.i("Recipe List", "Add button clicked");
                 Intent intent = new Intent();
-                intent.setClass(this, AddRecipeActivity.class);
+                intent.setClass(mContext, AddRecipeActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_testItems:

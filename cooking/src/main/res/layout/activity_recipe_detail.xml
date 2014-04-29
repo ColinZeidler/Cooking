@@ -21,18 +21,22 @@
 
                 <TextView
                     style="@style/CardText"
-                    android:text="@string/rd_title"
-                    android:id="@+id/rd_recipe_name"/>
+                    android:text="@string/er_intro"/>
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/CardText"
-                    android:text="@string/er_intro"/>
+                    android:id="@+id/r_overview"
+                    android:text="@string/test_text"
+                    android:layout_margin="5dp"/>
 
                 </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
-                style="@style/CardUI">
+                style="@style/CardUI"
+                android:id="@+id/r_ingredient_list">
 
                 <TextView
                     style="@style/CardText"
@@ -42,7 +46,8 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                style="@style/CardUI">
+                style="@style/CardUI"
+                android:id="@+id/r_step_list">
 
                 <TextView
                     style="@style/CardText"

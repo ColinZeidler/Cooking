@@ -36,8 +36,19 @@ public class AddStepActivity extends Activity {
         Log.v("Edit Step", "stepNum= " + stepNum);
 
         ab.setTitle("Step: " + stepNum);
+
+        //click listener to use for the Edit text fields
+        View.OnClickListener textClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((EditText)v).selectAll();
+            }
+        };
+
         mText = (EditText) findViewById(R.id.es_timer_minutes);
+        mText.setOnClickListener(textClick);
         sText = (EditText) findViewById(R.id.es_timer_seconds);
+        sText.setOnClickListener(textClick);
         iText = (EditText) findViewById(R.id.es_step_instruct);
 
         //starts off as off so start disabled

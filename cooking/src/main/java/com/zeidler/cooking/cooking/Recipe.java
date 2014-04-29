@@ -1,12 +1,13 @@
 package com.zeidler.cooking.cooking;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
 /**
  * Created by Colin on 2014-04-13.
  */
-public class Recipe implements Comparable<Recipe> {
+public class Recipe implements Comparable<Recipe>, Serializable { //todo implement Parcelable instead
     private String name;
     private String overview;
     private List<Step> steps;
