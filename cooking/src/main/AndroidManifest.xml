@@ -29,6 +29,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RecipeListView"/>
         </activity>
+        <activity android:name=".recipedetails.StepDetailActivity"
+            android:parentActivityName=".RecipeListView">
+            <meta-data
+                android:name="android:support.PARENT_ACTIVITY"
+                android:value=".RecipeListView"/>
+        </activity>
     </application>
 
 </manifest>

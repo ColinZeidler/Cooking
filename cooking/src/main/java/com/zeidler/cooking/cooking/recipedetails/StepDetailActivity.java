@@ -37,7 +37,7 @@ public class StepDetailActivity extends Activity {
 
         if (ab != null) {
             ab.setTitle("Test");
-
+            ab.setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -54,6 +54,7 @@ public class StepDetailActivity extends Activity {
             case R.id.action_next:
                 return true;
             case R.id.action_prev:
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
