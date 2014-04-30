@@ -83,7 +83,6 @@ public class RecipeListView extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                Log.i("Recipe List", "Add button clicked");
                 Intent intent = new Intent();
                 intent.setClass(mContext, AddRecipeActivity.class);
                 startActivity(intent);
@@ -112,11 +111,9 @@ public class RecipeListView extends Activity {
                     dbManager.deleteRecipe(r);
                 }
 
-                Log.v("Thread2", "done deleting items");
             }
         }).start();
 
-        Log.v("Thread1", "new Thread is running");
     }
 
     private void createTestItems() {
