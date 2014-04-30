@@ -118,6 +118,7 @@ public class RecipeDetailActivity extends Activity {
                 intent.putExtra("pos", nextPos);
                 intent.putExtra("steps", (ArrayList<Step>) mSteps);
                 intent.setClass(mContext, StepDetailActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_exit:
                 finish();
