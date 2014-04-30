@@ -1,6 +1,5 @@
 package com.zeidler.cooking.cooking;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.zeidler.cooking.cooking.addrecipe.AddRecipeActivity;
@@ -62,9 +60,6 @@ public class RecipeListView extends Activity {
                 return false;
             }
         });
-
-
-        ActionBar actionbar = getActionBar();
     }
 
     @Override
