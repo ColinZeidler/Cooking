@@ -3,6 +3,7 @@ package com.zeidler.cooking.cooking.recipedetails;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +17,9 @@ import com.zeidler.cooking.cooking.R;
 import com.zeidler.cooking.cooking.Recipe;
 import com.zeidler.cooking.cooking.Step;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Colin on 2014-04-16.
  */
@@ -23,6 +27,8 @@ public class RecipeDetailActivity extends Activity {
     private Recipe recipe;
     private LinearLayout stepLayout, ingLayout;
     private Context mContext;
+    private List<Step> mSteps;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +39,10 @@ public class RecipeDetailActivity extends Activity {
 
         ActionBar ab = getActionBar();
 
-        ab.setTitle(recipe.getName());
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null) {
+            ab.setTitle(recipe.getName());
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
         stepLayout = (LinearLayout) findViewById(R.id.r_step_list);
         ingLayout = (LinearLayout) findViewById(R.id.r_ingredient_list);
@@ -42,7 +50,8 @@ public class RecipeDetailActivity extends Activity {
         TextView overview = (TextView) findViewById(R.id.r_overview);
         overview.setText(recipe.getOverview());
 
-        for (Step s : recipe.getSteps()) {
+        mSteps = recipe.getSteps();
+        for (Step s : mSteps) {
             addStep(s);
         }
         for (String i : recipe.getIngredients()) {
@@ -65,8 +74,9 @@ public class RecipeDetailActivity extends Activity {
 
         num.setText(mStep.getNumber() + ".");
         String instructions;
-        if (mStep.getInstruct().length() > 20) {
-            instructions = mStep.getInstruct().substring(0, 20) + "...";
+        final int siLength = 40;
+        if (mStep.getInstruct().length() > siLength) {
+            instructions = mStep.getInstruct().substring(0, siLength) + "...";
         } else {
             instructions = mStep.getInstruct();
         }
@@ -103,6 +113,11 @@ public class RecipeDetailActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_start:
+                int nextPos = 0;
+                Intent intent = new Intent();
+                intent.putExtra("pos", nextPos);
+                intent.putExtra("steps", (ArrayList<Step>) mSteps);
+                intent.setClass(mContext, StepDetailActivity.class);
                 return true;
             case R.id.action_exit:
                 finish();
