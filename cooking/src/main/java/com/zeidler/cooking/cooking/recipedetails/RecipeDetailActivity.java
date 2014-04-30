@@ -22,9 +22,13 @@ import java.util.List;
 
 /**
  * Created by Colin on 2014-04-16.
+ * Activity that presents the Details of a specified Recipe
+ *
+ * contains controls to navigate though the individual steps of the recipe and exit back to the
+ * list of recipes
+ *
  */
 public class RecipeDetailActivity extends Activity {
-    private Recipe recipe;
     private LinearLayout stepLayout, ingLayout;
     private Context mContext;
     private List<Step> mSteps;
@@ -35,7 +39,7 @@ public class RecipeDetailActivity extends Activity {
         setContentView(R.layout.activity_recipe_detail);
 
         mContext = this;
-        recipe = (Recipe) getIntent().getExtras().getSerializable("Recipe");
+        Recipe recipe = (Recipe) getIntent().getExtras().getSerializable("Recipe");
 
         ActionBar ab = getActionBar();
 
