@@ -5,17 +5,22 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.zeidler.cooking.cooking.Recipe;
 import com.zeidler.cooking.cooking.Step;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Colin on 2014-04-16.
+ *
+ * Database handler that manages the input and retrieval of Recipes and Steps to and from the
+ * SQLite Database
+ *
+ * Only one instance of this should ever be used, as such always call DataManager.getInstance
+ * instead of new DataManager
  */
 public class DataManager extends SQLiteOpenHelper{
 
@@ -125,13 +130,13 @@ public class DataManager extends SQLiteOpenHelper{
         db.insert(R_TABLENAME, null, values);
     }
 
-    public void updateStep(Step step) {
-
-    }
-
-    public void updateRecipe(Recipe recipe) {
-
-    }
+//    public void updateStep(Step step) {
+//
+//    }
+//
+//    public void updateRecipe(Recipe recipe) {
+//
+//    }
 
     public List<Recipe> getRecipes() {
         List<Recipe> rList = new ArrayList<Recipe>();
@@ -142,15 +147,12 @@ public class DataManager extends SQLiteOpenHelper{
         if (cursor.moveToFirst()) {
             do {
                 String[] temp = cursor.getString(3).split(DELIM);
-                List<String> ings = new ArrayList<String>(temp.length);
-                for (int i = 0; i < temp.length; i ++) {
-                    ings.add(temp[i]);
-                }
+                List<String> ings = new ArrayList<String>(Arrays.asList(temp));
 
                 temp = cursor.getString(4).split(DELIM);
                 List<Step> steps = new ArrayList<Step>(temp.length);
-                for (int i = 0; i < temp.length; i++) {
-                    long l = Long.parseLong(temp[i]);
+                for (String aTemp : temp) {
+                    long l = Long.parseLong(aTemp);
                     steps.add(getStep(l));
                 }
                 Recipe recipe = new Recipe(cursor.getString(1), cursor.getString(2),
@@ -169,15 +171,14 @@ public class DataManager extends SQLiteOpenHelper{
         if (cursor != null)
             cursor.moveToFirst();
 
-        Step s = new Step(cursor.getInt(1), cursor.getString(2), cursor.getLong(3), uID);
-        return s;
+        return new Step(cursor.getInt(1), cursor.getString(2), cursor.getLong(3), uID);
     }
 
-    public List<Step> getSteps() {  //Probably won't ever be used
-        String selectQuery = "SELECT * FROM " + S_TABLENAME;
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        return new ArrayList<Step>();
-    }
+//    public List<Step> getSteps() {  //Probably won't ever be used
+//        String selectQuery = "SELECT * FROM " + S_TABLENAME;
+//        Cursor cursor = db.rawQuery(selectQuery, null);
+//        return new ArrayList<Step>();
+//    }
 
     public void deleteStep(Step s) {
         db.delete(S_TABLENAME, S_KEY + " = ?", new String[] {String.valueOf(s.getuID())});
